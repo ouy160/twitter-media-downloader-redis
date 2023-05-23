@@ -1,0 +1,12 @@
+__pycache__
+*.spec
+.idea
+.history
+dist
+build
+log
+twitter_media_download
+sample
+test
+venv
+.vscode
