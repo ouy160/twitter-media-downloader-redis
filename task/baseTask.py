@@ -51,7 +51,7 @@ class Task(object):
             self.errFlag = True
             print(parse_warning)
             writeLog(f'{self.userName}_unexpectData',
-                     f'{traceback.format_exc()}\n\n{json.dumps(self.pageContent)}')  # debug
+                     f'{traceback.format_exc()}\n\n{json.dumps(self.pageContent, ensure_ascii=False)}')  # debug
         except Exception:
             self.errFlag = True
             print(crash_warning)
@@ -106,14 +106,14 @@ class Task(object):
         t1.join()
         t2.join()
         if self.total.qsize():
-            with open(os.path.join(self.savePath, '__data__'), 'w+') as f:
+            with open(os.path.join(self.savePath, '__data__'), 'w+', encoding="utf-8") as f:
                 f.write(makeData(self.savePath))  # 文件的写操作
             print(task_finish.format(self.done.qsize(), self.total.qsize(),
                                      round(time.perf_counter() - start, 1), self.saveAbsPath))
         elif self.pageContent and not self.errFlag:
             print(dl_nothing_warning)
             writeLog(f'{self.twtId or self.userName}_noMedia',
-                     json.dumps(self.pageContent))  # debug
+                     json.dumps(self.pageContent, ensure_ascii=False))  # debug
 
 
 def fun2(s: str):  # 需要优化  仅适用于自己

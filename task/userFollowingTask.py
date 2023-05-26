@@ -61,7 +61,7 @@ class UserFollowingTask():
                 self.errFlag = True
                 print(parse_warning)
                 writeLog(f'{self.userName}_fo_unexpectData',
-                         f'{traceback.format_exc()}\n\n{json.dumps(self.pageContent)}')  # debug
+                         f'{traceback.format_exc()}\n\n{json.dumps(self.pageContent, ensure_ascii=False)}')  # debug
             except Exception:
                 self.errFlag = True
                 print(crash_warning)
@@ -86,4 +86,4 @@ class UserFollowingTask():
         elif self.pageContent:
             print(dl_nothing_warning)
             writeLog(f'{self.userName}_noFollowing',
-                     json.dumps(self.pageContent))  # debug
+                     json.dumps(self.pageContent, ensure_ascii=False))  # debug

@@ -320,7 +320,7 @@ def getUserId(userName: str):
         return [userId[0], safename(uname[0]) if uname else 'default']
     else:
         print(user_warning)
-        writeLog(userName, json.dumps(page_content))
+        writeLog(userName, json.dumps(page_content, ensure_ascii=False))
         return None
 
 
@@ -408,7 +408,7 @@ def downloadFile(savePath: str, saveUri: str, dataList: queue.Queue, done: queue
                                 if os.path.exists(filePath):
                                     continue
                                 else:
-                                    saveText(filePath, json.dumps(datalayer))
+                                    saveText(filePath, json.dumps(datalayer, indent=4, ensure_ascii=False))
                                 continue
                             pathList = []
                             for datatype, data in datalayer.get('dataList').items():
@@ -448,7 +448,7 @@ def downloadFile(savePath: str, saveUri: str, dataList: queue.Queue, done: queue
                                         if os.path.exists(filePath) and os.path.isfile(filePath):
                                             pathList.append(fileUri)
                             for path in pathList:
-                                r.set('twitter:' + twtId, json.dumps(pathList), nx=True)
+                                r.set('twitter:' + twtId, json.dumps(pathList, ensure_ascii=False), nx=True)
             except Exception:
                 print(download_warning.format(traceback.format_exc()))
 
@@ -658,7 +658,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
         result = getResult(tweet)
         if not result:
             print(parse_warning)
-            writeLog(f'{userName}_unexpectData', json.dumps(tweet))
+            writeLog(f'{userName}_unexpectData', json.dumps(tweet, ensure_ascii=False))
             continue
         elif 'errText' in result:
             print(dataErr_warning.format(result.get('errText')))
@@ -736,7 +736,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                     # fail
                     elif media['type'] and media['type'] not in ['video', 'animated_gif', 'photo']:
                         print(parse_warning)
-                        writeLog(f'{twtId}_unexpectType', json.dumps(media))
+                        writeLog(f'{twtId}_unexpectType', json.dumps(media, ensure_ascii=False))
             twtId = str(twtId)
             isMediaTwt = len(picList) or len(gifList) or len(vidList)
             if _userName not in twtDic:
