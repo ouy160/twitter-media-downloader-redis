@@ -226,6 +226,7 @@ def saveEnv():
     if 'global' not in conf.sections():
         conf.add_section('global')
     conf.set("global", "download_path", getContext("dl_path"))
+    conf.set("global", "download_path_old", getContext("od_path"))
     conf.set("global", "cookie", getContext("headers")['Cookie'])
     conf.set("global", "updateinfo", getContext("updateInfo"))
     conf.set("global", "concurrency", getContext("concurrency"))
@@ -259,6 +260,8 @@ def getEnv():
                         headers['Cookie'] = item[1]
                 elif item[0] == 'download_path' and item[1]:
                     setContext('dl_path', item[1])
+                elif item[0] == 'download_path_old' and item[1]:
+                    setContext('od_path', item[1])
                 elif item[0] == 'updateinfo' and item[1]:
                     setContext('updateInfo', eval(item[1]))
                 elif item[0] == 'concurrency' and item[1]:
@@ -405,7 +408,8 @@ def downloadFile(savePath: str, saveUri: str, dataList: queue.Queue, done: queue
                                     userName=userName, twtId=twtId, date=date, time=time, type='text',
                                     ori='') + '.rpi'
                                 filePath = os.path.join(savePath, fileName)
-                                if os.path.exists(filePath):
+                                if os.path.exists(filePath) or os.path.exists(
+                                        filePath.replace(getContext('dl_path'), getContext('od_path'))):
                                     continue
                                 else:
                                     saveText(filePath, json.dumps(datalayer, indent=4, ensure_ascii=False))
@@ -425,7 +429,10 @@ def downloadFile(savePath: str, saveUri: str, dataList: queue.Queue, done: queue
                                             type=f'{datatype}{count}') + ext
                                         filePath = os.path.join(savePath, fileName)
                                         fileUri = os.path.normpath(os.path.join(saveUri, fileName))
-                                        if os.path.exists(filePath) or os.path.exists(f'{filePath}.cache'):
+                                        if os.path.exists(filePath) or os.path.exists(
+                                                filePath.replace(getContext('dl_path'),
+                                                                 getContext('od_path'))) or os.path.exists(
+                                            f'{filePath}.cache'):
                                             if os.path.isfile(filePath):
                                                 pathList.append(fileUri)
                                             continue
@@ -439,7 +446,9 @@ def downloadFile(savePath: str, saveUri: str, dataList: queue.Queue, done: queue
                                         ori='') + '.txt'
                                     filePath = os.path.join(savePath, fileName)
                                     fileUri = os.path.normpath(os.path.join(saveUri, fileName))
-                                    if os.path.exists(filePath):
+                                    if os.path.exists(filePath) or os.path.exists(
+                                            filePath.replace(getContext('dl_path'),
+                                                             getContext('od_path'))):
                                         if os.path.isfile(filePath):
                                             pathList.append(fileUri)
                                         continue
@@ -679,7 +688,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                 'screen_name'] if 'core' in result else userIdDic[result['user_id_str']]['screen_name']
         except KeyError:
             _userName = "-"
-        if str(twtId) in __data__(task.savePath):
+        if str(twtId) in task.get_data0():
             _sameCount_ += 1
         legacy = result['legacy'] if 'legacy' in result else result
         legacylist = [[_userName, twtId, legacy]]
@@ -816,9 +825,11 @@ def showConfig():
     concurrency = getContext('concurrency')
     fileName = getContext('fileName')
     dl_path = getContext('dl_path')
+    od_path = getContext('od_path')
     type = getContext('type')
     print(config_info.format(proxy=proxy, retweeted=retweeted, media=media, cookie=cookie,
-                             quoted=quoted, concurrency=concurrency, fileName=fileName, dl_path=dl_path, type=type))
+                             quoted=quoted, concurrency=concurrency, fileName=fileName, dl_path=dl_path,
+                             od_path=od_path, type=type))
 
 
 '''

@@ -38,10 +38,32 @@ class Task(object):
         self.dataList = Queue()  # 任务数据队列
         self.pageContent = None  # 接口元数据(用于debug)
         self.errFlag = False
+        self.__data__ = []
+        self.__di__ = False
 
     @abstractmethod
     def getDataList(self):
         raise NotImplemented
+
+    def get_data0(self):
+        if not self.__di__:
+            self.__data__ = self.data()
+            self.__di__ = True
+        return self.__data__
+
+    def data(self):
+        arr = []
+        if os.path.exists(os.path.join(self.savePath, '__data__')):
+            with open(os.path.join(self.savePath, '__data__')) as f:
+                arr += f.readlines()
+        # todo
+        if os.path.exists(
+                os.path.join(self.savePath.replace(getContext('dl_path'), getContext('od_path')), '__data__')):
+            with open(os.path.join(self.savePath.replace(getContext('dl_path'), getContext('od_path')),
+                                   '__data__')) as f0:
+                arr += f0.readlines()
+        arr = list(map(lambda s: s.replace('\n', ''), arr))
+        return arr
 
     def parseData(self, cursor, rest_id_list):
         try:
