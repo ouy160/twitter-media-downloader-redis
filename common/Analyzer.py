@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from typing import List
 
+from common.const import getContext
+from common.tools import getEnv
 
 def post_frequency_analyzer():
     today = datetime.now().date()
@@ -19,11 +21,11 @@ def post_frequency_analyzer():
                 if username in data_map:
                     print(username)
                 data_map[username] = tag
-
-    root_dir = "I:\\twitter\\twitter_media_download"
+    root_dir_old = getContext('od_path')
+    root_dir_new = getContext('dl_path')
     time_window = timedelta(days=30)
     data = defaultdict(list)
-    for blogger in os.listdir(root_dir):
+    for blogger in list(set(os.listdir(root_dir_new) + os.listdir(root_dir_old))):
         avg_post_frequency = analyzer(blogger, time_window)
         format_frequency = decimal.Decimal(str(avg_post_frequency / time_window.days))
         data[format_frequency].append(blogger)
@@ -77,10 +79,17 @@ def analyzer(blogger: str, time_window: timedelta) -> float:
 
 
 def get_posts(blogger: str) -> List[float]:
-    root_dir = f"I:\\twitter\\twitter_media_download\\{blogger}"
+    root_dir_old = getContext('od_path')
+    root_dir_new = getContext('dl_path')
+    root_dir_old_list = root_dir_old + "\\{blogger}"
+    root_dir_new_list = root_dir_new + "\\{blogger}"
     result = set()
     for dirname in ["media", "home"]:
-        path = os.path.join(root_dir, dirname)
+        path = os.path.join(root_dir_old_list, dirname)
+        if os.path.isdir(path):
+            result.update(get_timestamps(path, blogger))
+    for dirname in ["media", "home"]:
+        path = os.path.join(root_dir_new_list, dirname)
         if os.path.isdir(path):
             result.update(get_timestamps(path, blogger))
     return sorted(result)
@@ -101,4 +110,5 @@ def format_pct(val: float, digits: int = 2) -> str:
 
 
 if __name__ == "__main__":
+    getEnv()
     post_frequency_analyzer()
