@@ -9,6 +9,7 @@ from typing import List
 from common.const import getContext
 from common.tools import getEnv
 
+
 def post_frequency_analyzer():
     today = datetime.now().date()
     data_dir = "data.all"
@@ -81,17 +82,18 @@ def analyzer(blogger: str, time_window: timedelta) -> float:
 def get_posts(blogger: str) -> List[float]:
     root_dir_old = getContext('od_path')
     root_dir_new = getContext('dl_path')
-    root_dir_old_list = root_dir_old + "\\{blogger}"
-    root_dir_new_list = root_dir_new + "\\{blogger}"
+    root_dir_old_list = root_dir_old + f"\\{blogger}"
+    root_dir_new_list = root_dir_new + f"\\{blogger}"
     result = set()
     for dirname in ["media", "home"]:
+        lst = []
         path = os.path.join(root_dir_old_list, dirname)
         if os.path.isdir(path):
-            result.update(get_timestamps(path, blogger))
-    for dirname in ["media", "home"]:
+            lst += get_timestamps(path, blogger)
         path = os.path.join(root_dir_new_list, dirname)
         if os.path.isdir(path):
-            result.update(get_timestamps(path, blogger))
+            lst += get_timestamps(path, blogger)
+        result.update(lst)
     return sorted(result)
 
 
