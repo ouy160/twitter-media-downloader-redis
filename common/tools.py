@@ -67,8 +67,8 @@ def initalArgs():
 def argsHandler():
     args = getContext('args')
     if args.version:
-        print('version: {}\ndonate page: {}\nissue page: {}\n'.format(
-            version, donate_page, issue_page))
+        print('version: {}'.format(
+            version))
         checkUpdate()
         return
     if args.proxy:

@@ -18,8 +18,8 @@ def main():
     initalArgs()
     getEnv()
     if len(sys.argv) == 1:  # 命令行参数为空 / 双击运行程序 -> 进入交互模式
-        print('version: {}\ndonate page: {}\nissue page: {}\n'.format(
-            version, donate_page, issue_page))
+        print('version: {}'.format(
+            version))
         checkUpdate()
         cmdMode(False)
     else:

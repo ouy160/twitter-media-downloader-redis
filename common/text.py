@@ -7,7 +7,7 @@ Description: 存放公用提示文本和链接
 '''
 
 # external
-donate_page = 'https://afdian.net/@mengzonefire'
+# donate_page = 'https://afdian.net/@mengzonefire'
 issue_page = 'https://github.com/mengzonefire/twitter-media-downloader/issues'
 release_page = 'https://github.com/mengzonefire/twitter-media-downloader/releases'
 cookie_tips_page = 'https://git.io/how_to_get_cookies_cn'
