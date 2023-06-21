@@ -48,8 +48,11 @@ def cmdMode(clearScreen=True):
             print(input_ask)
         elif temp == '4':
             url_list = process_data(read_data('data'))
-        elif temp == '5':
-            url_list = process_data(read_data('data.hot'))
+        elif temp.count('5') > 0:
+            l = read_data('data.hot')
+            if temp.count("-") > 0:
+                l.reverse()
+            url_list = process_data(l)
         elif temp == '6':
             url_list = process_data(read_data('data.analyze.low'))
         elif temp == '7':
