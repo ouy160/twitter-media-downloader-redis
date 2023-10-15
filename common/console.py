@@ -111,7 +111,7 @@ def process_data(list: List):
             suffix = u.split("@")[-1]
             if suffix.count('m') > 0:
                 url_prefix = str(u).removesuffix("/@" + suffix)
-                url_list.append(url_prefix + "/media")
+                url_list.append('https://twitter.com/' + url_prefix + "/media")
             #if suffix.count('h') > 0:
              #   url_prefix = str(u).removesuffix("/@" + suffix)
              #   url_list.append(url_prefix)
