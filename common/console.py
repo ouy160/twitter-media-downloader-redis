@@ -112,14 +112,14 @@ def process_data(list: List):
             if suffix.count('m') > 0:
                 url_prefix = str(u).removesuffix("/@" + suffix)
                 url_list.append(url_prefix + "/media")
-            if suffix.count('h') > 0:
-                url_prefix = str(u).removesuffix("/@" + suffix)
-                url_list.append(url_prefix)
-        for u in tempList:
-            suffix = u.split("@")[-1]
-            if suffix.count('l') > 0:
-                url_prefix = str(u).removesuffix("/@" + suffix)
-                url_list.append(url_prefix + "/likes")
+            #if suffix.count('h') > 0:
+             #   url_prefix = str(u).removesuffix("/@" + suffix)
+             #   url_list.append(url_prefix)
+       # for u in tempList:
+          #  suffix = u.split("@")[-1]
+           # if suffix.count('l') > 0:
+            #    url_prefix = str(u).removesuffix("/@" + suffix)
+             #   url_list.append(url_prefix + "/likes")
     return url_list
 
 
