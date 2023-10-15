@@ -12,7 +12,7 @@ import queue
 import traceback
 import httpx
 import argparse
-
+import random
 from common.redisCli import getConnection
 from common.text import *
 from common.const import *
@@ -739,7 +739,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                         variants = sorted(media['video_info']['variants'],
                                           key=lambda s: s['bitrate'] if 'bitrate' in s else 0, reverse=True)[0]
                         url = variants['url']
-                        if url:
+                        if url and int(media['video_info']['duration_millis']) / 1000 <= 30:  # 限制视频下载时长.
                             vidList.append(url)
                             total.put('add')
                     # fail

@@ -5,6 +5,7 @@ LastEditTime: 2023-03-15 00:49:43
 LastEditors: mengzonefire
 Description: 推主推文批量爬取任务类
 '''
+import random
 import time
 import httpx
 
@@ -12,6 +13,7 @@ from common.const import *
 from common.text import *
 from common.tools import getHttpText
 from task.baseTask import Task
+from common.logger import writeLog
 
 
 class UserMediaTask(Task):
