@@ -48,12 +48,18 @@ def cmdMode(clearScreen=True):
             print(input_ask)
         elif temp == '4':
             url_list = process_data(read_data('data'))
-        elif temp == '5':
+        elif temp.startswith('5'):
             url_list = process_data(read_data('data.hot'))
-        elif temp == '-5':
+            if temp.count(",") > 0:
+                skip = int(temp.split(",")[1])
+                url_list = url_list[skip - 1:]
+        elif temp.startswith('-5'):
             l = read_data('data.hot')
             l.reverse()
             url_list = process_data(l)
+            if temp.count(",") > 0:
+                skip = int(temp.split(",")[1])
+                url_list = url_list[skip - 1:]
         elif temp == '6':
             url_list = process_data(read_data('data.analyze.low'))
         elif temp == '7':
