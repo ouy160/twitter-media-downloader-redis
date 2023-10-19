@@ -118,14 +118,14 @@ def process_data(list: List):
             if suffix.count('m') > 0:
                 url_prefix = str(u).removesuffix("/@" + suffix)
                 url_list.append('https://twitter.com/' + url_prefix + "/media")
-            # if suffix.count('h') > 0:
-            #   url_prefix = str(u).removesuffix("/@" + suffix)
-            #   url_list.append(url_prefix)
-    # for u in tempList:
-    #  suffix = u.split("@")[-1]
-    # if suffix.count('l') > 0:
-    #    url_prefix = str(u).removesuffix("/@" + suffix)
-    #   url_list.append(url_prefix + "/likes")
+        #    if suffix.count('h') > 0:
+        #         url_prefix = str(u).removesuffix("/@" + suffix)
+        #         url_list.append('https://twitter.com/' + url_prefix)
+        # for u in tempList:
+        #     suffix = u.split("@")[-1]
+        #     if suffix.count('l') > 0:
+        #         url_prefix = str(u).removesuffix("/@" + suffix)
+        #         url_list.append('https://twitter.com/' + url_prefix + "/likes")
     return url_list
 
 
@@ -289,12 +289,14 @@ def startCrawl(urlList: List):
             continue
         if urlChecker(url):
             print('\n正在提取 第{}条: {} > 剩余{}条 , 当前时间:{}'.format(inx + 1, url, size - inx - 1,
-                                                             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+                                                                          time.strftime("%Y-%m-%d %H:%M:%S",
+                                                                                        time.localtime())))
             urlHandler(url)
             success += 1
         else:
             print('\n不支持: {}'.format(url))
-    print('\n爬取完成. 共完成{}条数据. 当前时间:{}'.format(success, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    print(
+        '\n爬取完成. 共完成{}条数据. 当前时间:{}'.format(success, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 
 def urlChecker(url: str):
