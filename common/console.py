@@ -107,7 +107,7 @@ def process_data(list: List):
         else:
             if str(url).count("/@") > 0:
                 if str(url).endswith("/@all"):
-                    tempList.append(str(url).removesuffix("/@all") + "/@mhl")
+                    tempList.append(removesuffix(str(url), "/@all") + "/@mhl")
                 else:
                     tempList.append(url)
             else:
@@ -116,17 +116,23 @@ def process_data(list: List):
         for u in tempList:
             suffix = u.split("@")[-1]
             if suffix.count('m') > 0:
-                url_prefix = str(u).removesuffix("/@" + suffix)
+                url_prefix = removesuffix(str(u), "/@" + suffix)
                 url_list.append('https://twitter.com/' + url_prefix + "/media")
-        #    if suffix.count('h') > 0:
-        #         url_prefix = str(u).removesuffix("/@" + suffix)
+        #     if suffix.count('h') > 0:
+        #         url_prefix = removesuffix(str(u), "/@" + suffix)
         #         url_list.append('https://twitter.com/' + url_prefix)
         # for u in tempList:
         #     suffix = u.split("@")[-1]
         #     if suffix.count('l') > 0:
-        #         url_prefix = str(u).removesuffix("/@" + suffix)
+        #         url_prefix = removesuffix(str(u), "/@" + suffix)
         #         url_list.append('https://twitter.com/' + url_prefix + "/likes")
     return url_list
+
+
+def removesuffix(input_string, suffix):
+    if suffix and input_string.endswith(suffix):
+        return input_string[:-len(suffix)]
+    return input_string
 
 
 def config():  # 设置菜单
