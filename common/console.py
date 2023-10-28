@@ -46,26 +46,8 @@ def cmdMode(clearScreen=True):
             config()
             showConfig()
             print(input_ask)
-        elif temp == '4':
-            url_list = process_data(read_data('data'))
-        elif temp.startswith('5'):
-            url_list = process_data(read_data('data.hot'))
-            if temp.count(",") > 0:
-                skip = int(temp.split(",")[1])
-                url_list = url_list[skip - 1:]
-        elif temp.startswith('-5'):
-            l = read_data('data.hot')
-            l.reverse()
-            url_list = process_data(l)
-            if temp.count(",") > 0:
-                skip = int(temp.split(",")[1])
-                url_list = url_list[skip - 1:]
-        elif temp == '6':
-            url_list = process_data(read_data('data.analyze.low'))
-        elif temp == '7':
-            url_list = process_data(read_data('data.analyze.mid'))
-        elif temp == '8':
-            url_list = process_data(read_data('data.analyze.hig'))
+        elif temp == '4' or temp.count('5') > 0 or temp == '6' or temp == '7' or temp == 8:
+            url_list = getList(temp)
         elif temp == '9':
             post_frequency_analyzer()
         elif temp.count('@') > 0:
@@ -82,6 +64,32 @@ def cmdMode(clearScreen=True):
         startCrawl(url_list)
     if input(continue_ask):
         cmdMode()
+
+
+def getList(num):
+    num = str(num)
+    url_list = []
+    if num == '4':
+        url_list = process_data(read_data('data'))
+    elif num.startswith('5'):
+        url_list = process_data(read_data('data.hot'))
+        if num.count(",") > 0:
+            skip = int(num.split(",")[1])
+            url_list = url_list[skip - 1:]
+    elif num.startswith('-5'):
+        l = read_data('data.hot')
+        l.reverse()
+        url_list = process_data(l)
+        if num.count(",") > 0:
+            skip = int(num.split(",")[1])
+            url_list = url_list[skip - 1:]
+    elif num == '6':
+        url_list = process_data(read_data('data.analyze.low'))
+    elif num == '7':
+        url_list = process_data(read_data('data.analyze.mid'))
+    elif num == '8':
+        url_list = process_data(read_data('data.analyze.hig'))
+    return url_list
 
 
 def read_data(fileName):

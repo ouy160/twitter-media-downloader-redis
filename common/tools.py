@@ -59,6 +59,10 @@ def initalArgs():
                         help='exclude retweeted')
     parser.add_argument('-v', '--version', action='store_true',
                         help='show version and check update')
+    parser.add_argument('-x', '--x', dest='x',
+                        type=int, help='')
+    parser.add_argument('-s', '--skip', dest='s',
+                        type=int, help='')
     parser.add_argument('url', type=str, nargs='*', help=url_args_help)
     args = parser.parse_args()
     setContext('args', args)
@@ -657,6 +661,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
         tweet_list, cursor = getTweet(pageContent, isfirst=True)
     if not tweet_list:
         return cursor, rest_id_list
+    writeLog(userName + "data.json", json.dumps(tweet_list))
     twtDic = {}
     userIdDic = pageContent['globalObjects']['users'] if 'globalObjects' in pageContent else {
     }
