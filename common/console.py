@@ -46,7 +46,7 @@ def cmdMode(clearScreen=True):
             config()
             showConfig()
             print(input_ask)
-        elif temp == '4' or temp.count('5') > 0 or temp == '6' or temp == '7' or temp == 8:
+        elif len(temp) <= 2 and (temp == '4' or temp.count('5') > 0 or temp == '6' or temp == '7' or temp == '8'):
             url_list = getList(temp)
         elif temp == '9':
             post_frequency_analyzer()
