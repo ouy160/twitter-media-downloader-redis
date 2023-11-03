@@ -5,9 +5,9 @@ LastEditTime: 2023-03-09 23:31:12
 LastEditors: mengzonefire
 Description: 主函数入口
 '''
-
+import sys
 import traceback
-from common.console import cmdMode, startCrawl
+from common.console import cmdMode, startCrawl, getList
 from common.tools import *
 
 
@@ -24,7 +24,14 @@ def main():
         cmdMode(False)
     else:
         argsHandler()
-        startCrawl(getContext('args').url)
+        arg = getContext('args')
+        if arg.x:
+            stri = str(arg.x)
+            if arg.s:
+                stri += ',' + str(arg.s)
+            print(stri)
+            startCrawl(getList(stri))
+        startCrawl(arg.url)
 
 
 def test():  # debug

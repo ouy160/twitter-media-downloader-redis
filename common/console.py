@@ -46,20 +46,8 @@ def cmdMode(clearScreen=True):
             config()
             showConfig()
             print(input_ask)
-        elif temp == '4':
-            url_list = process_data(read_data('data'))
-        elif temp == '5':
-            url_list = process_data(read_data('data.hot'))
-        elif temp == '-5':
-            l = read_data('data.hot')
-            l.reverse()
-            url_list = process_data(l)
-        elif temp == '6':
-            url_list = process_data(read_data('data.analyze.low'))
-        elif temp == '7':
-            url_list = process_data(read_data('data.analyze.mid'))
-        elif temp == '8':
-            url_list = process_data(read_data('data.analyze.hig'))
+        elif temp == '4' or temp.count('5') > 0 or temp == '6' or temp == '7' or temp == 8:
+            url_list = getList(temp)
         elif temp == '9':
             post_frequency_analyzer()
         elif temp.count('@') > 0:
@@ -78,6 +66,32 @@ def cmdMode(clearScreen=True):
         cmdMode()
 
 
+def getList(num):
+    num = str(num)
+    url_list = []
+    if num == '4':
+        url_list = process_data(read_data('data'))
+    elif num.startswith('5'):
+        url_list = process_data(read_data('data.hot'))
+        if num.count(",") > 0:
+            skip = int(num.split(",")[1])
+            url_list = url_list[skip - 1:]
+    elif num.startswith('-5'):
+        l = read_data('data.hot')
+        l.reverse()
+        url_list = process_data(l)
+        if num.count(",") > 0:
+            skip = int(num.split(",")[1])
+            url_list = url_list[skip - 1:]
+    elif num == '6':
+        url_list = process_data(read_data('data.analyze.low'))
+    elif num == '7':
+        url_list = process_data(read_data('data.analyze.mid'))
+    elif num == '8':
+        url_list = process_data(read_data('data.analyze.hig'))
+    return url_list
+
+
 def read_data(fileName):
     if not os.path.exists(fileName) and fileName.count("analyze") > 0:
         post_frequency_analyzer()
@@ -85,8 +99,8 @@ def read_data(fileName):
     f = open(fileName, 'r', encoding='UTF-8')
     line = f.readline()
     while line:
-        if line.startswith("http"):
-            url_list.append(line.replace("\n", '').split(" ")[0])
+        # if line.startswith("http"):
+        url_list.append(line.replace("\n", '').split(" ")[0])
         line = f.readline()
     f.close()
     return url_list
@@ -101,7 +115,7 @@ def process_data(list: List):
         else:
             if str(url).count("/@") > 0:
                 if str(url).endswith("/@all"):
-                    tempList.append(str(url).removesuffix("/@all") + "/@mhl")
+                    tempList.append(removesuffix(str(url), "/@all") + "/@mhl")
                 else:
                     tempList.append(url)
             else:
@@ -110,17 +124,23 @@ def process_data(list: List):
         for u in tempList:
             suffix = u.split("@")[-1]
             if suffix.count('m') > 0:
-                url_prefix = str(u).removesuffix("/@" + suffix)
-                url_list.append(url_prefix + "/media")
-            if suffix.count('h') > 0:
-                url_prefix = str(u).removesuffix("/@" + suffix)
-                url_list.append(url_prefix)
-        for u in tempList:
-            suffix = u.split("@")[-1]
-            if suffix.count('l') > 0:
-                url_prefix = str(u).removesuffix("/@" + suffix)
-                url_list.append(url_prefix + "/likes")
+                url_prefix = removesuffix(str(u), "/@" + suffix)
+                url_list.append('https://twitter.com/' + url_prefix + "/media")
+        #     if suffix.count('h') > 0:
+        #         url_prefix = removesuffix(str(u), "/@" + suffix)
+        #         url_list.append('https://twitter.com/' + url_prefix)
+        # for u in tempList:
+        #     suffix = u.split("@")[-1]
+        #     if suffix.count('l') > 0:
+        #         url_prefix = removesuffix(str(u), "/@" + suffix)
+        #         url_list.append('https://twitter.com/' + url_prefix + "/likes")
     return url_list
+
+
+def removesuffix(input_string, suffix):
+    if suffix and input_string.endswith(suffix):
+        return input_string[:-len(suffix)]
+    return input_string
 
 
 def config():  # 设置菜单
@@ -283,12 +303,14 @@ def startCrawl(urlList: List):
             continue
         if urlChecker(url):
             print('\n正在提取 第{}条: {} > 剩余{}条 , 当前时间:{}'.format(inx + 1, url, size - inx - 1,
-                                                             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+                                                                          time.strftime("%Y-%m-%d %H:%M:%S",
+                                                                                        time.localtime())))
             urlHandler(url)
             success += 1
         else:
             print('\n不支持: {}'.format(url))
-    print('\n爬取完成. 共完成{}条数据. 当前时间:{}'.format(success, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    print(
+        '\n爬取完成. 共完成{}条数据. 当前时间:{}'.format(success, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 
 def urlChecker(url: str):

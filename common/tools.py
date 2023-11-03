@@ -12,7 +12,7 @@ import queue
 import traceback
 import httpx
 import argparse
-
+import random
 from common.redisCli import getConnection
 from common.text import *
 from common.const import *
@@ -59,6 +59,10 @@ def initalArgs():
                         help='exclude retweeted')
     parser.add_argument('-v', '--version', action='store_true',
                         help='show version and check update')
+    parser.add_argument('-x', '--x', dest='x',
+                        type=int, help='')
+    parser.add_argument('-s', '--skip', dest='s',
+                        type=int, help='')
     parser.add_argument('url', type=str, nargs='*', help=url_args_help)
     args = parser.parse_args()
     setContext('args', args)
@@ -657,6 +661,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
         tweet_list, cursor = getTweet(pageContent, isfirst=True)
     if not tweet_list:
         return cursor, rest_id_list
+    writeLog(userName + "data.json", json.dumps(tweet_list))
     twtDic = {}
     userIdDic = pageContent['globalObjects']['users'] if 'globalObjects' in pageContent else {
     }
@@ -739,7 +744,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                         variants = sorted(media['video_info']['variants'],
                                           key=lambda s: s['bitrate'] if 'bitrate' in s else 0, reverse=True)[0]
                         url = variants['url']
-                        if url:
+                        if url and int(media['video_info']['duration_millis']) / 1000 <= 10:  # 限制视频下载时长.
                             vidList.append(url)
                             total.put('add')
                     # fail

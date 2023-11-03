@@ -30,6 +30,7 @@ context = {
     'proxy': None,
     'headers': {'authorization': authorization, 'Cookie': ''},
     'dl_path': 'twitter_media_download',
+    'od_path': 'twitter_media_download_old',
     'log_path': 'log',
     'updateInfo': {'LastCheckDate': '', 'tagName': '', 'name': ''},
     'concurrency': 8,
