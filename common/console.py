@@ -46,12 +46,12 @@ def cmdMode(clearScreen=True):
             config()
             showConfig()
             print(input_ask)
+        elif temp.count('@') > 0:
+            url_list = process_data([temp])
         elif len(temp) <= 2 and (temp == '4' or temp.count('5') > 0 or temp == '6' or temp == '7' or temp == '8'):
             url_list = getList(temp)
         elif temp == '9':
             post_frequency_analyzer()
-        elif temp.count('@') > 0:
-            url_list = process_data([temp])
         elif urlChecker(temp):
             url_list.append(temp)
         else:  # 输入错误, 重置
