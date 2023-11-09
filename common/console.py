@@ -70,7 +70,7 @@ def getList(num):
     num = str(num)
     url_list = []
     if num == '4':
-        url_list = process_data(read_data('data.balck'))
+        url_list = process_data(read_data('data.black'))
     elif num.startswith('5'):
         url_list = process_data(read_data('data.hot'))
         if num.count(",") > 0:
