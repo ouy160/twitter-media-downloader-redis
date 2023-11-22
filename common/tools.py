@@ -672,7 +672,6 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
     _return_ = False
     _sameCount_ = 0
     _maxSameCount_ = getMaxSameCount(10)
-    print("_maxSameCount_ : "+str(_maxSameCount_))
     for tweet in tweet_list:
         result = getResult(tweet)
         if not result:
@@ -749,7 +748,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                         variants = sorted(media['video_info']['variants'],
                                           key=lambda s: s['bitrate'] if 'bitrate' in s else 0, reverse=True)[0]
                         url = variants['url']
-                        if url and int(media['video_info']['duration_millis']) / 1000000 <= 20:  # 限制视频下载时长.
+                        if url and int(media['video_info']['duration_millis']) / 1000000 <= 10:  # 限制视频下载时长.
                             vidList.append(url)
                             total.put('add')
                     # fail
