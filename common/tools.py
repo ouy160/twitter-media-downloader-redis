@@ -12,7 +12,6 @@ import queue
 import traceback
 import httpx
 import argparse
-import random
 from common.redisCli import getConnection
 from common.text import *
 from common.const import *
@@ -651,6 +650,11 @@ def __data__(filePath):
         return []
 
 
+def getMaxSameCount(param):
+    if getConnection().get('maxSameCount') is not None:
+        return int(getConnection().get('maxSameCount'))
+    else:
+        return param
 def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor, task):
     includeNonMedia = cfg['media']
     includeRetweeted = cfg['retweeted']
@@ -667,7 +671,8 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
     }
     _return_ = False
     _sameCount_ = 0
-    _maxSameCount_ = 5
+    _maxSameCount_ = getMaxSameCount(10)
+    print("_maxSameCount_ : "+str(_maxSameCount_))
     for tweet in tweet_list:
         result = getResult(tweet)
         if not result:
