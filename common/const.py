@@ -80,6 +80,7 @@ p_csrf_token = re.compile(r'ct0=(.+?)(?:;|$)')
 pProxy = re.compile(r'.+?:\d+$')
 pProxy2 = re.compile(r'(http|socks5)://(.+:.+@)?.+?:\d+$')
 p_user_id = re.compile(r'"rest_id":"(\d+)"')
+p_media_count = re.compile(r'"media_count":(\d+),')
 p_username = re.compile(r'"name":"(.*?)"')
 p_user_link = re.compile(
     r'https://twitter.com/([^/]+?)(?:/media|/likes|/following)?$')

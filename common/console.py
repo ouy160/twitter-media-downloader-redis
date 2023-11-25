@@ -8,6 +8,7 @@ Description: 命令行交互模块
 import time
 
 from common.Analyzer import post_frequency_analyzer
+from common.redisCli import getConnection
 from task.singlePageTask import SinglePageTask
 from task.searchTask import UserSearchTask
 from typing import List
@@ -18,6 +19,8 @@ from task.userFollowingTask import UserFollowingTask
 from task.userHomeTask import UserHomeTask
 from task.userLikesTask import UserLikesTask
 from task.userMediaTask import UserMediaTask
+
+r = getConnection()
 
 
 def cmdMode(clearScreen=True):
@@ -317,6 +320,13 @@ def urlChecker(url: str):
     return p_twt_link.findall(url) or p_user_link.findall(url) or url[0] == '@'
 
 
+def getMaxMediaCount(param):
+    if getConnection().get('maxMediaCount') is not None:
+        return int(getConnection().get('maxMediaCount'))
+    else:
+        return param
+
+
 def urlHandler(url: str):
     cfg = {'media': getContext('media'), 'quoted': getContext(
         'quoted'), 'retweeted': getContext('retweeted')}
@@ -338,6 +348,11 @@ def urlHandler(url: str):
             return
         userId = userInfoArr[0]
         uname = userInfoArr[1]
+        mediaCount = userInfoArr[2]
+        if mediaCount > getMaxMediaCount(9999):
+            r.lpush("media:than:" + getMaxMediaCount(9999), user_link)
+            print('\n用户{}媒体数量超出最大限制{}, 已跳过'.format(user_link, getMaxMediaCount(9999)))
+            return
         if func == 'media':
             # userMediaPage
             UserMediaTask(userName, uname, userId, cfg).start()
