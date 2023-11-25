@@ -6,6 +6,7 @@ LastEditors: mengzonefire
 Description: 命令行交互模块
 '''
 import time
+import traceback
 
 from common.Analyzer import post_frequency_analyzer
 from common.redisCli import getConnection
@@ -53,7 +54,7 @@ def cmdMode(clearScreen=True):
             url_list = process_data([temp])
         elif (len(temp) <= 2 and (
                 temp == '4' or temp.count('5') > 0 or temp == '6' or temp == '7' or temp == '8')) or temp.count(
-                ",") > 0:
+            ",") > 0:
             url_list = getList(temp)
         elif temp == '9':
             post_frequency_analyzer()
@@ -352,11 +353,13 @@ def urlHandler(url: str):
         uname = userInfoArr[1]
         mediaCount = userInfoArr[2]
         try:
+            print('\n用户{}媒体数量:{}'.format(user_link, mediaCount))
             if int(mediaCount) > getMaxMediaCount(9999):
-                r.set("media:than:" + user_link, mediaCount)
                 print('\n用户{}媒体数量超出最大限制{}, 已跳过'.format(user_link, getMaxMediaCount(9999)))
+                r.set("media:than:" + str(user_link), str(mediaCount))
                 return
-        except BaseException:
+        except Exception:
+            print('\nsaveErr:{}'.format(traceback.format_exc()))
             return
 
         if func == 'media':
