@@ -293,10 +293,17 @@ return {int|None} userId 推主id
 r = getConnection()
 
 
+def getUseCache(param):
+    if getConnection().get('useCache') is not None:
+        return True
+    else:
+        return param
+
+
 def getUserId(userName: str):
     page_content = None
     rk = "twitter:user:" + userName
-    if r.exists(rk):
+    if r.exists(rk) and getUseCache(True):
         page_content = r.get(rk)
     else:
         response = None
@@ -656,6 +663,8 @@ def getMaxSameCount(param):
         return int(getConnection().get('maxSameCount'))
     else:
         return param
+
+
 def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor, task):
     includeNonMedia = cfg['media']
     includeRetweeted = cfg['retweeted']
