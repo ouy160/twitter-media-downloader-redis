@@ -331,7 +331,7 @@ def getUserId(userName: str):
     mediaCount = p_media_count.findall(page_content)
     uname = p_username.findall(page_content)
     if userId:
-        return [userId[0], safename(uname[0]) if uname else 'default', mediaCount[0]]
+        return [userId[0], safename(uname[0]) if uname else 'default', mediaCount[0] if len(mediaCount)>0 else 0]
     else:
         print(user_warning)
         writeLog(userName, json.dumps(page_content, ensure_ascii=False))
