@@ -349,7 +349,7 @@ def urlHandler(url: str):
         userId = userInfoArr[0]
         uname = userInfoArr[1]
         mediaCount = userInfoArr[2]
-        if mediaCount > getMaxMediaCount(9999):
+        if int(mediaCount) > getMaxMediaCount(9999):
             r.lpush("media:than:" + getMaxMediaCount(9999), user_link)
             print('\n用户{}媒体数量超出最大限制{}, 已跳过'.format(user_link, getMaxMediaCount(9999)))
             return
