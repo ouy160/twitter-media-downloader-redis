@@ -331,7 +331,7 @@ def getUserId(userName: str):
     mediaCount = p_media_count.findall(page_content)
     uname = p_username.findall(page_content)
     if userId:
-        return [userId[0], safename(uname[0]) if uname else 'default', mediaCount[0] if len(mediaCount)>0 else 0]
+        return [userId[0], safename(uname[0]) if uname else 'default', mediaCount[0] if len(mediaCount) > 0 else 0]
     else:
         print(user_warning)
         writeLog(userName, json.dumps(page_content, ensure_ascii=False))
@@ -758,7 +758,8 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                         variants = sorted(media['video_info']['variants'],
                                           key=lambda s: s['bitrate'] if 'bitrate' in s else 0, reverse=True)[0]
                         url = variants['url']
-                        if url and int(media['video_info']['duration_millis']) / 1000000 <= 10:  # 限制视频下载时长.
+                        if url and int(media['video_info']['duration_millis']) / 60000 <= getMaxVideoTime(
+                                30):  # 限制视频下载时长.
                             vidList.append(url)
                             total.put('add')
                     # fail
@@ -780,6 +781,13 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                 total.put('add')
     dataList.put(dict(**twtDic))
     return cursor if _sameCount_ < _maxSameCount_ else None, rest_id_list
+
+
+def getMaxVideoTime(param):
+    if getConnection().get('maxVideoTime') is not None:
+        return int(getConnection().get('maxVideoTime'))
+    else:
+        return param
 
 
 '''
