@@ -54,7 +54,7 @@ def move_cache_files(src_dir, dest_dir, min_size=900 * 1024 * 1024):
 
 # 例子：将 /path/user/media/xxx.cache 中的 .cache 文件移动到 /dest 文件夹下
 source_directory = '/var/services/homes/super/x-download'
-destination_directory = '/var/services/homes/super/x-download-cache'
+destination_directory = '/var/services/homes/super/x-download-max'
 
 if __name__ == '__main__':
     move_cache_files(source_directory, destination_directory)
