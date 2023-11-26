@@ -354,8 +354,8 @@ def urlHandler(url: str):
         mediaCount = userInfoArr[2]
         try:
             print('\n用户{}媒体数量:{}'.format(user_link, mediaCount))
-            if int(mediaCount) > getMaxMediaCount(9999):
-                print('\n用户{}媒体数量超出最大限制{}, 已跳过'.format(user_link, getMaxMediaCount(9999)))
+            if int(mediaCount) > getMaxMediaCount(99999):
+                print('\n用户{}媒体数量超出最大限制{}, 已跳过'.format(user_link, getMaxMediaCount(99999)))
                 r.set("media:than:" + str(user_link), str(mediaCount))
                 return
         except Exception:
