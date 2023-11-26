@@ -759,7 +759,7 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
                                           key=lambda s: s['bitrate'] if 'bitrate' in s else 0, reverse=True)[0]
                         url = variants['url']
                         if url and int(media['video_info']['duration_millis']) / 60000 <= getMaxVideoTime(
-                                30):  # 限制视频下载时长.
+                                10):  # 限制视频下载时长.
                             vidList.append(url)
                             total.put('add')
                     # fail
