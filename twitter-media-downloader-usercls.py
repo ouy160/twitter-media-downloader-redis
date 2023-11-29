@@ -10,6 +10,9 @@ from common.tools import getUserId
 r = getConnection()
 
 if __name__ == '__main__':
+    for k in r.keys("twitter:user*"):
+        r.rename(k,str(k).replace("user",'oser'))
+        print(k)
     url_list = (read_data('data.hot'))
     for u in url_list:
         res = getUserId(u.split("/")[0])
@@ -17,5 +20,5 @@ if __name__ == '__main__':
             r.set("u:suc:"+u,json.dumps(url_list, ensure_ascii=False))
         else:
             r.set("u:fail:"+u,"")
-        time.sleep(10)
+        time.sleep(5)
 
