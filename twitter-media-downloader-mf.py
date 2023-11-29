@@ -6,7 +6,7 @@ from common.redisCli import getConnection
 r = getConnection()
 
 
-def move_cache_files(src_dir, dest_dir, min_size=900 * 1024 * 1024):
+def move_cache_files(src_dir, dest_dir, min_size=300 * 1024 * 1024):
     # 遍历源目录的一级子目录
     for user_folder in os.listdir(src_dir):
         user_folder_path = os.path.join(src_dir, user_folder)
