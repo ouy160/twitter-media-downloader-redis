@@ -5,6 +5,7 @@ LastEditTime: 2023-03-13 20:36:56
 LastEditors: mengzonefire
 Description: 命令行交互模块
 '''
+import json
 import time
 import traceback
 
@@ -348,7 +349,9 @@ def urlHandler(url: str):
         userName = user_link[0]
         userInfoArr = getUserId(userName)
         if not userInfoArr:
+            r.set("user:fail:" + userName, "<null>")
             return
+        r.set("user:success:" + userName, json.dumps(userInfoArr, ensure_ascii=False))
         userId = userInfoArr[0]
         uname = userInfoArr[1]
         mediaCount = userInfoArr[2]
