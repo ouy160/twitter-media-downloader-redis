@@ -10,8 +10,8 @@ from common.tools import getUserId
 r = getConnection()
 
 if __name__ == '__main__':
-    for k in r.keys("twitter:user*"):
-        r.rename(k,str(k).replace("user",'oser'))
+    for k in r.keys("twitter:user:*"):
+        r.rename(k,str(k).replace(":user:",':oser:'))
         print(k)
     url_list = (read_data('data.hot'))
     for u in url_list:
