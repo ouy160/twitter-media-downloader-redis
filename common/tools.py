@@ -675,7 +675,6 @@ def parseData(pageContent, total, userName, dataList, cfg, rest_id_list, cursor,
         tweet_list, cursor = getTweet(pageContent, isfirst=True)
     if not tweet_list:
         return cursor, rest_id_list
-    writeLog(userName + "data.json", json.dumps(tweet_list))
     twtDic = {}
     userIdDic = pageContent['globalObjects']['users'] if 'globalObjects' in pageContent else {
     }
