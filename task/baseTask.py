@@ -7,18 +7,19 @@ Description: 任务类基类
 '''
 
 import json
-import os
 import math
-import time
+import os
 import threading
-from queue import Queue
-from abc import abstractmethod
+import time
 import traceback
+from abc import abstractmethod
+from concurrent.futures import ThreadPoolExecutor, wait
+from queue import Queue
+
+from common.const import getContext
 from common.logger import writeLog
 from common.text import *
-from common.const import getContext
 from common.tools import downloadFile, parseData
-from concurrent.futures import ThreadPoolExecutor, wait
 
 
 class Task(object):

@@ -38,7 +38,7 @@ class UserSearchTask(Task):
             params = json.loads(
                 userSearchApiPar.format(q, twtCount, cursorPar))
             response = None
-            with httpx.Client(proxies=getContext('proxy'), headers=getContext('headers'), verify=False) as client:
+            with httpx.Client(proxies=getContext('proxy'), headers=getContext('headers'), verify=False, timeout=60) as client:
                 for i in range(1, 56):
                     try:
                         response = client.get(userSearchApi, params=params)

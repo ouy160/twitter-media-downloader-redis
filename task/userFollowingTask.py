@@ -34,7 +34,7 @@ class UserFollowingTask():
         while True:
             cursorPar = cursor and '"cursor":"{}",'.format(cursor)
             response = None
-            with httpx.Client(proxies=getContext('proxy'), headers=getContext('headers'), verify=False) as client:
+            with httpx.Client(proxies=getContext('proxy'), headers=getContext('headers'), verify=False, timeout=60) as client:
                 for i in range(1, 56):
                     try:
                         response = client.get(userFollowingApi, params={

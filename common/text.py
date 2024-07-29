@@ -113,7 +113,7 @@ input_ask = \
     '2.设置网络代理\n' \
     '3.设置下载参数\n' \
     '4.爬取data文件\n' \
-    '5.爬取data.hot文件\n' \
+    '5.爬取data.hot.txt文件\n' \
     '6.爬取data.analyze.low文件\n' \
     '7.爬取data.analyze.mid文件\n' \
     '8.爬取data.analyze.hig文件\n\n' \

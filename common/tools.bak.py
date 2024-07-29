@@ -12,7 +12,6 @@ import queue
 import traceback
 import httpx
 import argparse
-import random
 from common.redisCli import getConnection
 from common.text import *
 from common.const import *
@@ -507,16 +506,7 @@ def getResult(tweet):
 
         if 'entryId' not in tweet:
             return tweet
-        if 'item' in tweet:
-            if 'tweetDisplayType' in tweet['item']['itemContent'] and \
-                    tweet['item']['itemContent']['tweetDisplayType'] in ['Tweet', 'SelfThread', 'MediaGrid']:
-                result = getresult(
-                    tweet['item']['itemContent']['tweet_results']['result'])
-                return result
-            else:
-                return None
-                
-        if 'content' in tweet and tweet['content']['entryType'] == 'TimelineTimelineItem':
+        if tweet['content']['entryType'] == 'TimelineTimelineItem':
             # SelfThread -> singlePageTask
             if 'tweetDisplayType' in tweet['content']['itemContent'] and \
                     tweet['content']['itemContent']['tweetDisplayType'] in ['Tweet', 'SelfThread']:
@@ -585,9 +575,6 @@ param {bool} isfirst 是否为第一页
 
 
 def getTweet(pageContent, cursor=None, isfirst=False):
-    random_number = round(random.uniform(0.5, 2), 1)
-    # print(random_number)
-    time.sleep(random_number)
     entries = []
     if 'errors' in pageContent:
         message = pageContent['errors'][0]['message']
@@ -597,7 +584,6 @@ def getTweet(pageContent, cursor=None, isfirst=False):
         entries = list(pageContent['globalObjects']['tweets'].values())
         if not entries and isfirst:
             print(needCookie_warning)
-
         cursor = \
             pageContent['timeline']['instructions'][0]['addEntries']['entries'][-1]['content']['operation']['cursor'][
                 'value'] \
@@ -609,7 +595,6 @@ def getTweet(pageContent, cursor=None, isfirst=False):
                 if len(pageContent['timeline']['instructions']) != 1 and
                    pageContent['timeline']['instructions'][-1]['replaceEntry'][
                        'entryIdToReplace'] == 'sq-cursor-bottom' else None)
-
     elif 'user' in pageContent['data']:
         result = pageContent['data']['user']['result']
         if result['__typename'] == 'UserUnavailable':
@@ -623,23 +608,8 @@ def getTweet(pageContent, cursor=None, isfirst=False):
             return None, None
         instructions = result['timeline_v2']['timeline']['instructions']
         for instruction in instructions:
-            if instruction['type'] == 'TimelineAddToModule':
-                '''
-                entries = instruction['moduleItems']
-                if 'content' in  entries[-1]:
-                  cursor = entries[-1]['content']['value'] if len(
-                      entries) != 0 else None
-                break
-                '''
-                entries = instruction['moduleItems']
-                continue
             if instruction['type'] == 'TimelineAddEntries':
-                for entrie in instruction['entries']:
-                    if 'items' in entrie['content']:
-                        for item in entrie['content']["items"]:
-                            entries.append(item)
-                    else:
-                        entries.append(entrie)
+                entries = instruction['entries']
                 cursor = entries[-1]['content']['value'] if len(
                     entries) != 0 else None
                 break
@@ -652,7 +622,7 @@ def getTweet(pageContent, cursor=None, isfirst=False):
         return None, None
     tweets = []
     for tweet in entries:
-        if 'entryId' in tweet and ('profile-' in tweet['entryId'] or 'tweet-' in tweet['entryId']) :
+        if 'entryId' in tweet and 'tweet-' in tweet['entryId']:
             tweets.append(tweet)
         elif 'entryId' not in tweet:
             tweets.append(tweet)

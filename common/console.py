@@ -79,12 +79,12 @@ def getList(num):
     if num == '4':
         url_list = process_data(read_data('data.black'))
     elif num.startswith('5'):
-        url_list = process_data(read_data('data.hot'))
+        url_list = process_data(read_data('data.hot.txt'))
         if num.count(",") > 0:
             skip = int(num.split(",")[1])
             url_list = url_list[skip - 1:]
     elif num.startswith('-5'):
-        l = read_data('data.hot')
+        l = read_data('data.hot.txt')
         l.reverse()
         url_list = process_data(l)
         if num.count(",") > 0:
@@ -310,8 +310,8 @@ def startCrawl(urlList: List):
             continue
         if urlChecker(url):
             print('\n正在提取 第{}条: {} > 剩余{}条 , 当前时间:{}'.format(inx + 1, url, size - inx - 1,
-                                                                          time.strftime("%Y-%m-%d %H:%M:%S",
-                                                                                        time.localtime())))
+                                                             time.strftime("%Y-%m-%d %H:%M:%S",
+                                                                           time.localtime())))
             urlHandler(url)
             success += 1
         else:
@@ -332,8 +332,8 @@ def getMaxMediaCount(param):
 
 
 def urlHandler(url: str):
-    cfg = {'media': getContext('media'), 'quoted': getContext(
-        'quoted'), 'retweeted': getContext('retweeted')}
+    cfg = {'media': getContext('media'),
+           'quoted': getContext('quoted'), 'retweeted': getContext('retweeted')}
 
     # singlePage
     twt_link = p_twt_link.findall(url)

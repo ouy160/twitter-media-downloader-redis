@@ -34,9 +34,11 @@ class UserMediaTask(Task):
                 return
             cursorPar = cursor and '"cursor":"{}",'.format(cursor)
             response = None
-            with httpx.Client(proxies=getContext('proxy'), headers=getContext('headers'), verify=False) as client:
+            with httpx.Client(proxies=getContext('proxy'), headers=getContext('headers'), verify=False, timeout=60) as client:
                 for i in range(1, 56):
                     try:
+                        a=userMediaApiPar.format(self.userId, twtCount, cursorPar)
+                        # print('response url: ',a)
                         response = client.get(userMediaApi, params={
                             'variables': userMediaApiPar.format(self.userId, twtCount, cursorPar),
                             'features': commonApiPar})
@@ -58,5 +60,7 @@ class UserMediaTask(Task):
                 return
             self.pageContent = response.json()
             cursor, rest_id_list = self.parseData(cursor, rest_id_list)
+            if rest_id_list:print('rest_id_list: ',len(rest_id_list))
+            else:print('rest_id终止')
             if not cursor:
                 break

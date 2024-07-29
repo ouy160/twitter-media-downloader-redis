@@ -13,7 +13,7 @@ if __name__ == '__main__':
     for k in r.keys("twitter:user:*"):
         r.rename(k,str(k).replace(":user:",':oser:'))
         print(k)
-    url_list = (read_data('data.hot'))
+    url_list = (read_data('data.hot.txt'))
     for u in url_list:
         res = getUserId(u.split("/")[0])
         if res is not None:

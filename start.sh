@@ -1,4 +1,3 @@
-nohup python twitter-media-downloader.py -x 5 > out.1129.log &
-echo '-x 5 start up ed ...'
-nohup python twitter-media-downloader.py -x 4 > out.1129.4.log &
-echo '-x 4 start up ed ...'
+current_date=$(date +\%Y\%m\%d)
+nohup python /var/services/homes/super/project/twitter-downloader/twitter-media-downloader.py -x 5 > /var/services/homes/super/project/twitter-downloader/log/out.$current_date.log 2> /var/services/homes/super/project/twitter-downloader/log/error.$current_date.log &
+

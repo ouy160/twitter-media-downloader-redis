@@ -36,7 +36,7 @@ def main():
 
 def test():  # debug
     getSysProxy()
-    # with open('./sample/twt.json', 'r') as f:
+    # with open('./sample/twt.json', 'r') as f:1
     #     print(getResult(json.loads(f.read())))
 
 
